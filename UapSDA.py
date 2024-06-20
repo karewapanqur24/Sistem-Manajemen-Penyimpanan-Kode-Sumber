@@ -55,6 +55,24 @@ class CodeManagement:
         self.data.sort(key=lambda snippet: snippet.title)
         self.save_data()
 
+class CodeManagementApp:
+    def _init_(self, root):
+        self.code_management = CodeManagement()
+        self.root = root
+        self.root.title("Sistem Manajemen Kode")
+
+        
+        self.create_widgets()
+
+    def create_widgets(self):
+        tk.Button(self.root, text="Tambah Snippet Kode", command=self.add_snippet).pack(fill=tk.X)
+        tk.Button(self.root, text="Lihat Semua Snippet Kode", command=self.display_all).pack(fill=tk.X)
+        tk.Button(self.root, text="Lihat Snippet Kode Berdasarkan Indeks", command=self.view_snippet).pack(fill=tk.X)
+        tk.Button(self.root, text="Ubah Snippet Kode", command=self.edit_snippet).pack(fill=tk.X)
+        tk.Button(self.root, text="Hapus Snippet Kode", command=self.delete_snippet).pack(fill=tk.X)
+        tk.Button(self.root, text="Cari Snippet Kode", command=self.search_snippet).pack(fill=tk.X)
+        tk.Button(self.root, text="Urutkan Snippet Kode Berdasarkan Judul", command=self.sort_snippets).pack(fill=tk.X)
+        tk.Button(self.root, text="Keluar", command=self.root.quit).pack(fill=tk.X)
 
     def edit_snippet(self):
         index = simpledialog.askinteger("Input", "Masukkan indeks snippet kode:")
