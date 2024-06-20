@@ -74,6 +74,27 @@ class CodeManagementApp:
         tk.Button(self.root, text="Urutkan Snippet Kode Berdasarkan Judul", command=self.sort_snippets).pack(fill=tk.X)
         tk.Button(self.root, text="Keluar", command=self.root.quit).pack(fill=tk.X)
 
+    def add_snippet(self):
+        title = simpledialog.askstring("Input", "Masukkan judul kode:")
+        code = simpledialog.askstring("Input", "Masukkan kode:")
+        if title and code:
+            self.code_management.create(title, code)
+            messagebox.showinfo("Info", f"Snippet kode dengan judul '{title}' telah ditambahkan.")
+
+    def display_all(self):
+        snippets = ""
+        for i, snippet in enumerate(self.code_management.data):
+            snippets += f"Indeks: {i}, Judul: {snippet.title}\nKode:\n{snippet.code}\n\n"
+        messagebox.showinfo("Semua Snippet Kode", snippets)
+
+    def view_snippet(self):
+        index = simpledialog.askinteger("Input", "Masukkan indeks snippet kode:")
+        snippet = self.code_management.read(index)
+        if snippet:
+            messagebox.showinfo("Snippet Kode", f"Judul: {snippet.title}\nKode:\n{snippet.code}")
+        else:
+            messagebox.showwarning("Warning", "Indeks tidak valid.")
+
     def edit_snippet(self):
         index = simpledialog.askinteger("Input", "Masukkan indeks snippet kode:")
         title = simpledialog.askstring("Input", "Masukkan judul kode baru:")
@@ -81,3 +102,25 @@ class CodeManagementApp:
         if title and code:
             self.code_management.update(index, title, code)
             messagebox.showinfo("Info", f"Snippet kode pada indeks {index} telah diperbarui.")
+
+    def delete_snippet(self):
+        index = simpledialog.askinteger("Input", "Masukkan indeks snippet kode:")
+        self.code_management.delete(index)
+        messagebox.showinfo("Info", f"Snippet kode pada indeks {index} telah dihapus.")
+
+    def search_snippet(self):
+        title = simpledialog.askstring("Input", "Masukkan judul kode yang dicari:")
+        index = self.code_management.search(title)
+        if index != -1:
+            messagebox.showinfo("Info", f"Snippet kode dengan judul '{title}' ditemukan pada indeks {index}.")
+        else:
+            messagebox.showwarning("Warning", "Snippet kode tidak ditemukan.")
+
+    def sort_snippets(self):
+        self.code_management.sort_by_title()
+        messagebox.showinfo("Info", "Semua snippet kode telah diurutkan berdasarkan judul.")
+
+if _name_ == "_main_":
+    root = tk.Tk()
+    app = CodeManagementApp(root)
+    root.mainloop()
